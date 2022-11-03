@@ -1,0 +1,21 @@
+import React from "react"
+import { GlobalStyles } from "twin.macro"
+import { Global } from "@emotion/react"
+import { baseStyles } from "./styles"
+import { Header, Footer } from "./"
+
+const Layout = ({ children }) => {
+  return (
+    <>
+      <GlobalStyles />
+      <Global styles={baseStyles} />
+      <Header />
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
+      <Footer />
+    </>
+  )
+}
+
+export default Layout

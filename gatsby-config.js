@@ -1,18 +1,27 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
+    title: `Russellwzr's HomePage`,
     author: {
-      name: `Kyle Mathews`,
-      summary: `who lives and works in San Francisco building useful things.`,
+      name: `Russellwzr`,
+      summary: `who interests in front-end development & visualization & human-computer-interaction.`,
     },
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsbystarterblogsource.gatsbyjs.io/`,
+    description: `Russellwzr's HomePage: Personal Introduction & Blogs`,
+    siteUrl: `https://russellwzr.github.io/`,
     social: {
-      twitter: `kylemathews`,
+      wechat: `Russell`,
+      github: `https://github.com/Russellwzr`,
+      email: `russellwzrr@gmail.com`,
     },
   },
   plugins: [
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-sitemap`,
+    `gatsby-plugin-emotion`,
+    `gatsby-plugin-postcss`,
     `gatsby-plugin-image`,
+    `gatsby-plugin-sharp`,
+    `gatsby-plugin-offline`,
+    `gatsby-transformer-sharp`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -49,8 +58,6 @@ module.exports = {
         ],
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
       resolve: `gatsby-plugin-feed`,
       options: {
