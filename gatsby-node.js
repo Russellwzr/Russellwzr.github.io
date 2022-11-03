@@ -7,7 +7,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // template for tag blog list
   const tagBlogList = path.resolve(`./src/templates/tag-blog-list.js`)
 
-  // Define a template for blog post
+  // template for single blog post
   const blogPost = path.resolve(`./src/templates/blog-post.js`)
 
   // Get all tag name and markdown blog posts
@@ -49,7 +49,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   if (tags.length > 0) {
     tags.forEach(tag => {
       createPage({
-        path: "blog/" + tag.name,
+        path: "/blog/" + tag.name,
         component: tagBlogList,
         context: {
           tagName: tag.name,
@@ -65,7 +65,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
 
       createPage({
-        path: "blog" + post.fields.slug,
+        path: post.fields.slug,
         component: blogPost,
         context: {
           id: post.id,
@@ -81,7 +81,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
   if (node.internal.type === `MarkdownRemark`) {
-    const value = createFilePath({ node, getNode })
+    const value = "/blog" + createFilePath({ node, getNode })
 
     createNodeField({
       name: `slug`,

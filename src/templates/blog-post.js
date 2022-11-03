@@ -4,13 +4,10 @@ import { Layout } from "../components/layout"
 import { Seo } from "../components/common"
 
 const BlogPostTemplate = ({
-  data: { previous, next, site, markdownRemark: post },
-  location,
+  data: { previous, next, markdownRemark: post },
 }) => {
-  const siteTitle = site.siteMetadata?.title || `Title`
-
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout>
       <article
         className="blog-post"
         itemScope
