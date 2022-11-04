@@ -1,6 +1,6 @@
 import React from "react"
 import { StyledToggle } from "./styles"
-import useTheme from "../../hooks/useTheme"
+import { useTheme } from "../../hooks"
 
 export default function ThemeToggle() {
   const { isDark, setTheme } = useTheme()
@@ -19,8 +19,8 @@ export default function ThemeToggle() {
         checked={isDark}
         onChange={handleToggle}
       />
-      <span />
       {isDark ? "Dark Mode" : "Light Mode"}
+      <span />
     </StyledToggle>
   )
 }

@@ -10,7 +10,7 @@ const Layout = ({ children }) => {
       <GlobalStyles />
       <Global styles={baseStyles} />
       <Header />
-      <main id="main" tabIndex={-1}>
+      <main id="main" className="relative" tabIndex={-1}>
         {children}
       </main>
       <Footer />

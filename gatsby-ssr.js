@@ -13,6 +13,7 @@ import "@fontsource/open-sans/700.css"
 import "@fontsource/open-sans/800.css"
 import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
+import "@arco-design/web-react/dist/css/arco.css"
 
 config.autoAddCss = false
 

@@ -46,8 +46,7 @@ const Hero = () => {
             Shandong University
           </a>{" "}
           . My recent interests are Front-end Development, Visualization, Human
-          Computer Interaction and Artificial Intelligence.{" "}
-          <span>{isDark ? "😍" : "😎"}</span>
+          Computer Interaction and Artificial Intelligence. <span>{"😎"}</span>
         </p>
       </section>
     </StyledHero>

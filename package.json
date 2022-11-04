@@ -13,6 +13,7 @@
     }
   },
   "dependencies": {
+    "@arco-design/web-react": "^2.41.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@fontsource/open-sans": "^4.5.13",
@@ -20,6 +21,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.2.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/material": "^5.10.12",
     "dotenv": "^16.0.3",
     "gatsby": "^4.24.5",
     "gatsby-plugin-emotion": "^7.24.0",

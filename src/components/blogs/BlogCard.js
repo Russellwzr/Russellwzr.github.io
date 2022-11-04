@@ -5,7 +5,7 @@ import { StyledBlogCard } from "./styles"
 const BlogCard = ({ post }) => {
   const title = post.frontmatter.title || post.fields.slug
   return (
-    <li key={post.fields.slug}>
+    <li>
       <StyledBlogCard
         className="post-list-item"
         itemScope

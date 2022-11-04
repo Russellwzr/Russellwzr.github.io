@@ -47,6 +47,8 @@ export const StyledNav = styled.nav`
 
   a:not(.logo) {
     ${tw`flex items-center p-3 motion-safe:transition duration-200 tracking-wide border-b-2 border-transparent md:(ml-0 px-10 text-xl) hover:text-yellow-500`};
+
+    &.add-line,
     &[aria-current="page"],
     &:hover {
       ${tw`border-yellow-500`};
@@ -57,7 +59,7 @@ export const StyledNav = styled.nav`
 export const StyledHeader = tw.header`grid grid-template-columns[1fr minmax(min-content, max-content)] gap-x-2 md:gap-x-4`
 
 export const StyledFooter = styled.footer`
-  ${tw`grid py-6 text-3xl border-t-2 mt-28 md:mt-32 place-items-center gap-y-2`};
+  ${tw`grid py-6 text-3xl border-t-2 mt-10 place-items-center gap-y-2`};
 
   .title {
     ${tw`grid grid-flow-col text-lg font-semibold text-transparent gap-x-2 place-items-center bg-clip-text bg-gradient-to-r from-purple-500 to-yellow-500`};
@@ -75,10 +77,10 @@ export const StyledFooter = styled.footer`
 `
 
 export const StyledToggle = styled.label`
-  ${tw`inline-grid self-center grid-template-areas["input label"] grid-template-columns[2.5rem auto] gap-1 items-center text-lg hover:cursor-pointer`};
+  ${tw`inline-grid self-center grid-template-areas["input label"] grid-template-columns[2.5rem auto] gap-1 items-center md:text-lg hover:cursor-pointer`};
   input,
   span {
-    ${tw`grid-area[input] h-3 w-8 text-base`};
+    ${tw`grid-area[input] h-3 w-8 md:text-base`};
   }
   input {
     ${tw`opacity-0`};

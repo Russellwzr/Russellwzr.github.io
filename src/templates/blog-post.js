@@ -2,14 +2,15 @@ import * as React from "react"
 import { Link, graphql } from "gatsby"
 import { Layout } from "../components/layout"
 import { Seo } from "../components/common"
+import { StyledBlogArticle } from "../components/blogs/styles"
 
 const BlogPostTemplate = ({
   data: { previous, next, markdownRemark: post },
 }) => {
   return (
     <Layout>
-      <article
-        className="blog-post"
+      <StyledBlogArticle
+        className="mt-16"
         itemScope
         itemType="http://schema.org/Article"
       >
@@ -21,29 +22,23 @@ const BlogPostTemplate = ({
           dangerouslySetInnerHTML={{ __html: post.html }}
           itemProp="articleBody"
         />
-        <hr />
-      </article>
-      <nav className="blog-post-nav">
-        <ul
-          style={{
-            display: `flex`,
-            flexWrap: `wrap`,
-            justifyContent: `space-between`,
-            listStyle: `none`,
-            padding: 0,
-          }}
-        >
-          <li>
+      </StyledBlogArticle>
+      <hr className="mt-12" />
+      <nav>
+        <ul className="mt-8 flex justify-between font-light md:text-lg">
+          <li className="hover:text-yellow-500">
             {previous && (
               <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
+                <span className="font-bold mr-4">{"<  "}</span>
+                <span>{previous.frontmatter.title}</span>
               </Link>
             )}
           </li>
-          <li>
+          <li className="hover:text-yellow-500">
             {next && (
               <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
+                {next.frontmatter.title}
+                <span className="font-bold ml-4">{"  >"}</span>
               </Link>
             )}
           </li>

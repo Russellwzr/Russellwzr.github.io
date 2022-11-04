@@ -1,7 +1,7 @@
 import tw, { styled } from "twin.macro"
 
 const StyledHero = styled.article`
-  ${tw`mt-16`};
+  ${tw`mt-16 mb-28`};
 
   .hero-welcome {
     ${tw`grid grid-template-areas["hero"] items-center`};
