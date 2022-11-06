@@ -4,7 +4,7 @@ const useFetchBlogPosts = tagName => {
   const result = useStaticQuery(
     graphql`
       query {
-        allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+        allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
           nodes {
             excerpt
             fields {
@@ -21,7 +21,7 @@ const useFetchBlogPosts = tagName => {
       }
     `
   )
-  const posts = result.allMarkdownRemark.nodes
+  const posts = result.allMdx.nodes
   if (tagName === "All") return posts
   return posts.filter(post => post.frontmatter.tag === tagName)
 }

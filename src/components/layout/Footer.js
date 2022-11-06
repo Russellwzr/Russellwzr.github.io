@@ -19,7 +19,7 @@ const Footer = () => {
         >
           Chrism Williams
         </a>{" "}
-        for the initial work
+        for the starter.
       </p>
     </StyledFooter>
   )

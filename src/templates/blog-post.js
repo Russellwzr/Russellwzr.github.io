@@ -5,7 +5,8 @@ import { Seo } from "../components/common"
 import { StyledBlogArticle } from "../components/blogs/styles"
 
 const BlogPostTemplate = ({
-  data: { previous, next, markdownRemark: post },
+  data: { previous, next, mdx: post },
+  children,
 }) => {
   return (
     <Layout>
@@ -16,12 +17,9 @@ const BlogPostTemplate = ({
       >
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <p>{post.frontmatter.date}</p>
+          <small>{post.frontmatter.date}</small>
         </header>
-        <section
-          dangerouslySetInnerHTML={{ __html: post.html }}
-          itemProp="articleBody"
-        />
+        {children}
       </StyledBlogArticle>
       <hr className="mt-12" />
       <nav>
@@ -48,7 +46,7 @@ const BlogPostTemplate = ({
   )
 }
 
-export const Head = ({ data: { markdownRemark: post } }) => {
+export const Head = ({ data: { mdx: post } }) => {
   return (
     <Seo
       title={post.frontmatter.title}
@@ -57,30 +55,28 @@ export const Head = ({ data: { markdownRemark: post } }) => {
   )
 }
 
-export default BlogPostTemplate
-
 export const pageQuery = graphql`
-  query BlogPostBySlug(
+  query BlogPostTemplate(
     $id: String!
     $previousPostId: String
     $nextPostId: String
   ) {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    markdownRemark(id: { eq: $id }) {
-      id
-      excerpt(pruneLength: 160)
-      html
+    mdx(id: { eq: $id }) {
       frontmatter {
-        title
         date(formatString: "MMMM DD, YYYY")
         description
+        tag
+        title
+      }
+      fields {
+        timeToRead {
+          minutes
+          time
+          words
+        }
       }
     }
-    previous: markdownRemark(id: { eq: $previousPostId }) {
+    previous: mdx(id: { eq: $previousPostId }) {
       fields {
         slug
       }
@@ -88,7 +84,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    next: markdownRemark(id: { eq: $nextPostId }) {
+    next: mdx(id: { eq: $nextPostId }) {
       fields {
         slug
       }
@@ -98,3 +94,5 @@ export const pageQuery = graphql`
     }
   }
 `
+
+export default BlogPostTemplate

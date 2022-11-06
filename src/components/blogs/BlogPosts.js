@@ -20,7 +20,7 @@ const BlogPosts = ({ tagName }) => {
     Math.min(beginIndex + postsPerPage, posts.length)
   )
 
-  if (renderPosts.length == 0) {
+  if (renderPosts.length === 0) {
     return (
       <>
         <p>No blog posts in this page! Please return to the previous page.</p>

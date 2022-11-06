@@ -15,6 +15,8 @@ import { config } from "@fortawesome/fontawesome-svg-core"
 import "@fortawesome/fontawesome-svg-core/styles.css"
 import "@arco-design/web-react/dist/css/arco.css"
 
+import "katex/dist/katex.min.css"
+
 config.autoAddCss = false
 
 export const wrapRootElement = ({ element }) => (

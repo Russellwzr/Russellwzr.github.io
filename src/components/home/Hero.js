@@ -1,11 +1,9 @@
 import React from "react"
 import StyledHero from "./styles"
-import useTheme from "../../hooks/useTheme"
 import { StaticImage } from "gatsby-plugin-image"
 import { SocialList } from "../common"
 
 const Hero = () => {
-  const { isDark } = useTheme()
   return (
     <StyledHero>
       <section>

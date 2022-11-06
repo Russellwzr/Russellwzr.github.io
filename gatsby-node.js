@@ -1,5 +1,6 @@
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
+const readingTime = require(`reading-time`)
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
@@ -14,14 +15,14 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   const result = await graphql(
     `
       {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: DESC }
-          limit: 1000
-        ) {
+        allMdx(sort: { fields: [frontmatter___date], order: DESC }) {
           nodes {
             id
             fields {
               slug
+            }
+            internal {
+              contentFilePath
             }
           }
         }
@@ -43,7 +44,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   const tags = result.data.allDirectory.nodes
-  const posts = result.data.allMarkdownRemark.nodes
+  const posts = result.data.allMdx.nodes
 
   // Create tag-blog-list pages
   if (tags.length > 0) {
@@ -63,10 +64,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     posts.forEach((post, index) => {
       const previousPostId = index === 0 ? null : posts[index - 1].id
       const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
-
       createPage({
         path: post.fields.slug,
-        component: blogPost,
+        component: `${blogPost}?__contentFilePath=${post.internal.contentFilePath}`,
         context: {
           id: post.id,
           previousPostId,
@@ -80,13 +80,19 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
+  if (node.internal.type === `Mdx`) {
     const value = "/blog" + createFilePath({ node, getNode })
 
     createNodeField({
-      name: `slug`,
       node,
+      name: `slug`,
       value,
+    })
+
+    createNodeField({
+      node,
+      name: `timeToRead`,
+      value: readingTime(node.body),
     })
   }
 }
@@ -117,6 +123,11 @@ exports.createSchemaCustomization = ({ actions }) => {
     }
 
     type MarkdownRemark implements Node {
+      frontmatter: Frontmatter
+      fields: Fields
+    }
+
+    type Mdx implements Node {
       frontmatter: Frontmatter
       fields: Fields
     }
