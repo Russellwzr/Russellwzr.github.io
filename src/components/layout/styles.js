@@ -16,7 +16,7 @@ export const baseStyles = css`
   }
 
   body {
-    ${tw`font-sans font-normal bg-primary text-primary before:(block w-full)`};
+    ${tw`font-serif bg-primary text-primary before:(block w-full)`};
     &::before {
       ${tw`h-1 bg-gradient-to-r from-purple-800 via-yellow-400 to-turquoise`};
     }

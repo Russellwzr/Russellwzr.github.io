@@ -1,7 +1,7 @@
-import React from "react"
-import StyledHero from "./styles"
-import { StaticImage } from "gatsby-plugin-image"
-import { SocialList } from "../common"
+import React from 'react'
+import StyledHero from './styles'
+import { StaticImage } from 'gatsby-plugin-image'
+import { SocialList } from '../common'
 
 const Hero = () => {
   return (
@@ -14,7 +14,7 @@ const Hero = () => {
                 Hi there
                 <span role="img" aria-label="Hand wave emoji">
                   👋
-                </span>{" "}
+                </span>{' '}
               </span>
               I'm <span className="gatsby">Russell</span>
             </div>
@@ -27,24 +27,16 @@ const Hero = () => {
           </div>
         </div>
         <p>
-          I am currently a postgraduate of computer science and technology at{" "}
-          <a
-            href="http://www.ict.ac.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          I am currently a postgraduate of computer science and technology at{' '}
+          <a href="http://www.ict.ac.cn/" target="_blank" rel="noopener noreferrer">
             ICT, Chinese Academy of Sciences
-          </a>{" "}
-          . Before that, I received my bachelor's degree from{" "}
-          <a
-            href="https://www.cs.sdu.edu.cn/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          </a>{' '}
+          . Before that, I received my bachelor's degree from{' '}
+          <a href="https://www.cs.sdu.edu.cn/" target="_blank" rel="noopener noreferrer">
             Shandong University
-          </a>{" "}
-          . My recent interests are Front-end Development, Visualization, Human
-          Computer Interaction and Artificial Intelligence. <span>{"😎"}</span>
+          </a>{' '}
+          . My recent interests are Front-end Development, HCI, AI System and some funny AIGC applications.{' '}
+          <span>{'😎'}</span>
         </p>
       </section>
     </StyledHero>

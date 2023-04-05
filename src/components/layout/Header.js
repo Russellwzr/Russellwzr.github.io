@@ -19,10 +19,10 @@ const Header = () => {
       <StyledNav aria-label="Main Navigation">
         <Link to="/" className="logo"></Link>
         <Link to="/" className={addLine.home}>
-          home
+          Home
         </Link>
         <Link to="/blog" className={addLine.blog}>
-          blog
+          Blogs
         </Link>
       </StyledNav>
       <ThemeToggle />

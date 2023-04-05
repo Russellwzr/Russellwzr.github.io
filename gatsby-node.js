@@ -24,11 +24,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             internal {
               contentFilePath
             }
-          }
-        }
-        allDirectory(filter: { relativeDirectory: { eq: "" } }) {
-          nodes {
-            name
+            frontmatter {
+              tag
+            }
           }
         }
       }
@@ -43,36 +41,31 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     return
   }
 
-  const tags = result.data.allDirectory.nodes
   const posts = result.data.allMdx.nodes
-
-  // Create tag-blog-list pages
-  if (tags.length > 0) {
-    tags.forEach(tag => {
-      createPage({
-        path: "/blog/" + tag.name,
-        component: tagBlogList,
-        context: {
-          tagName: tag.name,
-        },
-      })
-    })
-  }
+  const tags = new Set()
 
   // Create blog posts pages
-  if (posts.length > 0) {
-    posts.forEach((post, index) => {
-      const previousPostId = index === 0 ? null : posts[index - 1].id
-      const nextPostId = index === posts.length - 1 ? null : posts[index + 1].id
-      createPage({
-        path: post.fields.slug,
-        component: `${blogPost}?__contentFilePath=${post.internal.contentFilePath}`,
-        context: {
-          id: post.id,
-          previousPostId,
-          nextPostId,
-        },
-      })
+  posts.forEach(post => {
+    for (const curTag of post.frontmatter.tag) {
+      tags.add(curTag)
+    }
+    createPage({
+      path: post.fields.slug,
+      component: `${blogPost}?__contentFilePath=${post.internal.contentFilePath}`,
+      context: {
+        id: post.id,
+      },
+    })
+  })
+
+  // Create tag-blog-list pages
+  for (const tag of tags) {
+    createPage({
+      path: "/blog/" + tag,
+      component: tagBlogList,
+      context: {
+        tagName: tag,
+      },
     })
   }
 }
@@ -136,6 +129,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       title: String
       description: String
       date: Date @dateformat
+      tag: [String!]!
     }
 
     type Fields {

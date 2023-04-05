@@ -19,15 +19,28 @@ const theme = createTheme({
 const TagButtonList = ({ checkedName = "All" }) => {
   const result = useStaticQuery(graphql`
     query {
-      allDirectory(filter: { relativeDirectory: { eq: "" } }) {
+      allMdx {
         nodes {
-          name
+          frontmatter {
+            tag
+          }
         }
       }
     }
   `)
 
-  const tags = [{ name: "All" }, ...result.allDirectory.nodes]
+  const mdxNodes = result.allMdx.nodes
+
+  console.log(mdxNodes)
+
+  const tagSet = new Set()
+  for (const node of mdxNodes) {
+    for (const curTagName of node.frontmatter.tag) {
+      tagSet.add(curTagName)
+    }
+  }
+
+  const tags = ["All", ...Array.from(tagSet)]
 
   const handleClick = (isChecked, tagName) => {
     if (isChecked) return
@@ -39,15 +52,16 @@ const TagButtonList = ({ checkedName = "All" }) => {
     <div className="flex space-x-2">
       <ThemeProvider theme={theme}>
         {tags.map(tag => {
-          const isChecked = checkedName === tag.name
+          console.log(tag)
+          const isChecked = checkedName === tag
           return (
             <Button
               variant={isChecked ? "contained" : "outlined"}
-              key={`tag-button-${tag.name}`}
+              key={`tag-button-${tag}`}
               color={isChecked ? "checked" : "notChecked"}
-              onClick={() => handleClick(isChecked, tag.name)}
+              onClick={() => handleClick(isChecked, tag)}
             >
-              {tag.name}
+              {tag}
             </Button>
           )
         })}
