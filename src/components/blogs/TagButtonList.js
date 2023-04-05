@@ -1,22 +1,22 @@
-import React from "react"
-import { graphql, useStaticQuery } from "gatsby"
-import Button from "@mui/material/Button"
-import { createTheme, ThemeProvider } from "@mui/material/styles"
-import { navigate } from "gatsby"
+import React from 'react'
+import { graphql, useStaticQuery } from 'gatsby'
+import Button from '@mui/material/Button'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { navigate } from 'gatsby'
 
 const theme = createTheme({
   palette: {
     notChecked: {
-      main: "#8285f4",
+      main: '#8285f4',
     },
     checked: {
-      main: "#8285f4",
-      contrastText: "#fff",
+      main: '#8285f4',
+      contrastText: '#fff',
     },
   },
 })
 
-const TagButtonList = ({ checkedName = "All" }) => {
+const TagButtonList = ({ checkedName = 'All' }) => {
   const result = useStaticQuery(graphql`
     query {
       allMdx {
@@ -31,8 +31,6 @@ const TagButtonList = ({ checkedName = "All" }) => {
 
   const mdxNodes = result.allMdx.nodes
 
-  console.log(mdxNodes)
-
   const tagSet = new Set()
   for (const node of mdxNodes) {
     for (const curTagName of node.frontmatter.tag) {
@@ -40,25 +38,24 @@ const TagButtonList = ({ checkedName = "All" }) => {
     }
   }
 
-  const tags = ["All", ...Array.from(tagSet)]
+  const tags = ['All', ...Array.from(tagSet)]
 
   const handleClick = (isChecked, tagName) => {
     if (isChecked) return
-    const toLoc = tagName === "All" ? "/blog" : "/blog/" + tagName
+    const toLoc = tagName === 'All' ? '/blog' : '/blog/' + tagName
     navigate(toLoc)
   }
 
   return (
     <div className="flex space-x-2">
       <ThemeProvider theme={theme}>
-        {tags.map(tag => {
-          console.log(tag)
+        {tags.map((tag) => {
           const isChecked = checkedName === tag
           return (
             <Button
-              variant={isChecked ? "contained" : "outlined"}
+              variant={isChecked ? 'contained' : 'outlined'}
               key={`tag-button-${tag}`}
-              color={isChecked ? "checked" : "notChecked"}
+              color={isChecked ? 'checked' : 'notChecked'}
               onClick={() => handleClick(isChecked, tag)}
             >
               {tag}
