@@ -106,5 +106,6 @@ module.exports = {
         legacy: false,
       },
     },
+    'gatsby-plugin-offline',
   ],
 }
