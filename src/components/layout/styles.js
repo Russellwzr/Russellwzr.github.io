@@ -1,4 +1,4 @@
-import tw, { css, theme, styled } from "twin.macro"
+import tw, { css, theme, styled } from 'twin.macro'
 
 export const LightBackground = theme`colors.white`
 export const DarkBackground = theme`colors.gray.700`
@@ -36,7 +36,7 @@ export const baseStyles = css`
 `
 
 export const StyledNav = styled.nav`
-  ${tw`grid grid-template-columns[1fr repeat(2, minmax(min-content, max-content))] gap-x-2 text-center place-items-center`};
+  ${tw`flex justify-self-end gap-x-2 text-center place-items-center`};
 
   .logo {
     ${tw`flex items-center py-2 justify-self-start md:justify-center`};
@@ -49,7 +49,7 @@ export const StyledNav = styled.nav`
     ${tw`flex items-center p-3 motion-safe:transition duration-200 tracking-wide border-b-2 border-transparent md:(ml-0 px-10 text-xl) hover:text-yellow-500`};
 
     &.add-line,
-    &[aria-current="page"],
+    &[aria-current='page'],
     &:hover {
       ${tw`border-yellow-500`};
     }

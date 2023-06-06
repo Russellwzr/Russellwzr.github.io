@@ -1,17 +1,17 @@
-import React from "react"
-import { Link } from "gatsby"
-import { StyledNav, StyledHeader } from "./styles"
-import ThemeToggle from "./ThemeToggle"
+import React from 'react'
+import { Link } from 'gatsby'
+import { StyledNav, StyledHeader } from './styles'
+import ThemeToggle from './ThemeToggle'
 
 const Header = () => {
   const addLine = {
-    home: "",
-    blog: "",
+    home: '',
+    blog: '',
   }
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     const pathLoc = window.location.pathname
-    if (pathLoc?.length <= 1) addLine.home = "add-line"
-    if (pathLoc.indexOf("/blog") === 0) addLine.blog = "add-line"
+    if (pathLoc?.length <= 1) addLine.home = 'add-line'
+    if (pathLoc.indexOf('/blog') === 0) addLine.blog = 'add-line'
   }
 
   return (
