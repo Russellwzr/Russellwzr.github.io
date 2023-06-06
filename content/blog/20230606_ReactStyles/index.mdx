@@ -1,0 +1,373 @@
+---
+title: React项目样式解决方案杂谈
+date: '2023-06-06T20:40:00'
+description: 对 SCSS, CSS Modules, Styled-components, TailwindCSS 等样式解决方案的个人感受~
+tag: ['FE']
+---
+
+对 SCSS, CSS Modules, Styled-components, TailwindCSS 等样式解决方案的个人感受~
+
+对于各个方案，本文首先会通过一个简单的 button 示例来介绍其使用风格，然后进行优缺点分析~
+
+## SCSS
+
+### 示例
+
+```scss
+$text-white: rgb(255 255 255) !default;
+$bg-blue: rgb(56 189 248) !default;
+$bg-blue-hover: rgb(125 211 252) !default;
+$bg-red: rgb(248 113 113) !default;
+$bg-red-hover: rgb(252 165 165) !default;
+
+.btn {
+  border-width: 0px;
+  border-radius: 9999px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: $text-white;
+}
+
+.btn-color-blue {
+  background-color: $bg-blue;
+  &:hover {
+    background-color: $bg-blue-hover;
+  }
+}
+
+.btn-color-red {
+  background-color: $bg-red;
+  &:hover {
+    background-color: $bg-red-hover;
+  }
+}
+```
+
+```javascript
+import React from 'react'
+import './index.scss'
+
+function App() {
+  return (
+    <div>
+      <button className="btn btn-color-blue">Blue Button</button>
+      <button className="btn btn-color-red">Red Button</button>
+    </div>
+  )
+}
+
+export default App
+```
+
+### 分析
+
+SCSS 是一个比较传统和成熟的样式解决方案，它将样式与组件的关注点分离，使用原生的样式写法，支持 CSS 所有语法，功能强大。但是其全局样式是一大痛点，在大型项目中，如果团队内部没有良好的命名规范（这无疑也在一定程度上加重了开发人员的心智负担），容易出现样式冲突。此外，其关注点分离的写法也使得样式文件中的内容与组件之间没有清晰的对应关系，难以分辨哪些是无用样式，这导致随着项目的不断迭代以及无用代码的不断堆积，项目的样式代码难以维护，加载到浏览器的样式也越来越多，会对性能产生一定的影响。
+
+## CSS Modules
+
+### 示例
+
+```css
+// colors.modules.css
+@value textWhite: rgb(255 255 255);
+@value bgBlue: rgb(56 189 248);
+@value bgBlueHover: rgb(125 211 252);
+@value bgRed: rgb(248 113 113);
+@value bgRedHover: rgb(252 165 165);
+
+// Button.modules.css
+@value colors: "./colors.modules.css";
+@value textWhite, bgBlue, bgBlueHover, bgRed, bgRedHover from colors;
+
+.btn {
+  border-width: 0px;
+  border-radius: 9999px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: textWhite;
+}
+
+.btnColorBlue {
+  background-color: bgBlue;
+  &:hover {
+    background-color: bgBlueHover;
+  }
+}
+
+.btnColorRed {
+  background-color: bgRed;
+  &:hover {
+    background-color: bgRedHover;
+  }
+}
+```
+
+```javascript
+import React from 'react'
+import style from './Button.modules.css'
+
+export default () => {
+  return (
+    <div>
+      <button className={`${style.btn} ${style.btnColorBlue}`}>Blue Button</button>
+      <button className={`${style.btn} ${style.btnColorRed}`}>Red Button</button>
+    </div>
+  )
+}
+```
+
+### 分析
+
+CSS Modules 通过哈希编码来避免全局的样式冲突，上述代码编译后的结果如下：
+
+```scss
+.aR6sN0Sm-Q7pRuWpSorbZ {
+  border-width: 0;
+  border-radius: 9999px;
+  padding: 0.5rem 1.5rem;
+  color: rgb(255 255 255);
+}
+
+._2T4ooxe7Tr3I5JkEMLod7P {
+  background-color: rgb(56 189 248);
+}
+
+._3CJsZOtoCJ9XpYfJp_6pot {
+  background-color: rgb(248 113 113);
+}
+```
+
+```html
+<div data-reactroot="">
+  <button class="aR6sN0Sm-Q7pRuWpSorbZ _2T4ooxe7Tr3I5JkEMLod7P">Blue Button</button>
+  <button class="aR6sN0Sm-Q7pRuWpSorbZ _3CJsZOtoCJ9XpYfJp_6pot">Red Button</button>
+</div>
+```
+
+CSS Modules 通过引入哈希编码的局部作用域，来确保每个组件的样式都是独立的，从而避免了因类名重复而引发的样式冲突问题。CSS Modules 中的组合用法，也允许不同组件之间的样式共享，提高了样式的可重用性。但是 CSS Modules 会带来一定的学习和使用成本，其需要额外的配置和工具支持，且样式覆盖比较麻烦，语法还只允许驼峰命名（与原生 CSS 写法相比有些别扭）。此外，CSS Modules 无法动态获取组件的状态，从开发体验层面来讲，缺乏一定的灵活性。
+
+## Styled-components
+
+### 示例
+
+```javascript
+import React from 'react'
+import styled from 'styled-components'
+
+const StyledButton = styled.button`
+  border-width: 0px;
+  border-radius: 9999px;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  color: rgb(255 255 255);
+  background-color: ${(props) => (props.color === 'blue' ? 'rgb(56 189 248)' : 'rgb(248 113 113)')};
+  &:hover {
+    background-color: ${(props) => (props.color === 'blue' ? 'rgb(125 211 252)' : 'rgb(252 165 165)')};
+  }
+`
+
+function App() {
+  return (
+    <div>
+      <StyledButton color="blue">Blue Button</StyledButton>
+      <StyledButton color="red">Red Button</StyledButton>
+    </div>
+  )
+}
+
+export default App
+```
+
+Styled-components 最终插入的样式为：
+
+```html
+<style data-styled="active" data-styled-version="6.0.0-rc.3">
+  .jipIVa {
+    border-width: 0px;
+    border-radius: 9999px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: rgb(255 255 255);
+    background-color: rgb(56 189 248);
+  }
+  .jipIVa:hover {
+    background-color: rgb(125 211 252);
+  }
+  .iakVcJ {
+    border-width: 0px;
+    border-radius: 9999px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    color: rgb(255 255 255);
+    background-color: rgb(248 113 113);
+  }
+  .iakVcJ:hover {
+    background-color: rgb(252 165 165);
+  }
+</style>
+```
+
+### 分析
+
+#### 优点
+
+- 通过哈希编码来保证类名的唯一性，限制了样式的作用域，从而避免了样式冲突。
+- CSS-in-JS 的写法非常灵活，在 styled-components 内部写样式和原生 CSS 的用法几乎一样，且可以动态获取组件所传入的参数，来进行条件样式的控制，功能更加强大，写法也更加简洁，减少了过去大量的冗余代码。
+- 样式与组件之间具有明确的对应关系，有助于样式代码的维护并且可以很好地支持 Critical CSS。
+
+#### 缺点
+
+- 不同版本的适配问题、包体积增大（发送给客户端的文件里会额外包含 styled-components 的 run time 代码）、组件包裹式的样式添加方式也会使得 ReactDevTools 结构更加复杂......
+
+- 性能开销问题
+
+  - **Frequently inserting CSS rules forces the browser to do a lot of extra work.**
+  - “In concurrent rendering, React can yield to the browser between renders. If you insert a new rule in a component, then React yields, the browser then have to see if those rules would apply to the existing tree. So it recalculates the style rules. Then React renders the next component, and then that component discovers a new rule and it happens again.
+    **Update 2022-10-25:** This quote from Sebastian is specifically referring to performance in React Concurrent Mode, **without** `useInsertionEffect`. I recommend reading the full discussion if you want an in-depth understanding of this. Thanks to Dan Abramov for [pointing out](https://twitter.com/dan_abramov/status/1584838817982590976) this inaccuracy on Twitter.” (from [Sam Magura](https://dev.to/srmagura))
+
+- 样式不稳定问题
+
+  - “样式插入优先级无法自定义，这就导致产生样式覆盖时，业务对样式覆盖的优先级无法产生稳定的预期。class 优先级由 header 定义顺序决定，而非 className 的字符顺序决定，而 header 定义顺序又由资源加载与 css-in-js 插入执行时机决定，导致业务几乎不可能有稳定的样式覆盖顺序。这里产生的问题就是业务代码不断增多的 `!important` 定义。”（《前端精读周刊》—263）
+
+  - 社区里也有一些相关的实际场景：
+
+    - [styled-components 使用 loadable 懒加载时样式优先级问题](https://soonwang.cn/2022/02/13/react-styled-components-and-loadable/)
+
+    - [记一次 组件库样式按需引入 与 styled components 导致的 Bug 排查分析](https://juejin.cn/post/7092423334037553182)
+
+  - 我自己也在本地模拟了一个简单的例子，在这个例子中，若 style.css 的插入顺序在 Styled-components 之后，则由于样式优先级问题，最终会产生样式冲突，导致 ComponentA 和 ComponentC 组件的样式覆盖失效。（但个人感觉只要选择器写得足够细，就能在一定程度上避免这种问题，但业务代码也会随之变长，导致可读性降低，难以进行后续维护.......）
+
+  - ```javascript
+    // ComponentB.js
+    import React from 'react';
+    import styled from 'styled-components';
+
+    const StyledDiv = styled.div`
+    .test-div {
+        color: yellow;
+      }
+    `
+
+    const ComponentB = (props) => {
+      const {children, ...restProps} = props;
+      return (
+      <StyledDiv {...restProps}>
+        <div className='test-div test-div1'>{children}</div>
+      </StyledDiv>
+      )
+    };
+
+    export default ComponentB;
+
+    // ComponentA.js
+    import React from 'react';
+    import styled from 'styled-components';
+    import ComponentB from './ComponentB';
+
+    const StyledDiv = styled(ComponentB)`
+    .test-div {
+        color:blue;
+      }
+    `
+
+    const ComponentA = (props) => {
+      const {children, ...restProps} = props;
+      return (
+      <StyledDiv {...restProps}>{children}</StyledDiv>
+      )
+    };
+
+    export default ComponentA;
+
+    // ComponentC.js
+    import React from 'react';
+    import styled from 'styled-components';
+    import ComponentB from './ComponentB';
+
+    const StyledDiv = styled(ComponentB)`
+    .test-div {
+        color: green;
+      }
+    `
+
+    const ComponentC = (props) => {
+      const {children, ...restProps} = props;
+      return (
+      <StyledDiv {...restProps}>{children}</StyledDiv>
+      )
+    };
+
+    export default ComponentC;
+
+    // style.css
+    .test-div.test-div1{
+      color: purple;
+    }
+
+    // 最终Styled-components所插入的样式
+    <style data-styled="active" data-styled-version="6.0.0-rc.3">
+    .dvtBrr .test-div{color:yellow;}.dxEcBv .test-div{color:blue;}.gnBMTv .test-div{color:green;}
+    </style>
+    ```
+
+### 底层原理
+
+- 参见上一篇文章[Styled-components 底层原理解析](https://russellwzr.github.io/blog/20230606_SCProcess/)
+
+## TailwindCSS
+
+### 示例
+
+```javascript
+// StyledButton.js
+import React from 'react'
+
+export default function StyledButton(props) {
+  const { color, ...restProps } = props
+  return (
+    <button
+      className={`rounded-full px-6 py-2 text-white ${
+        color === 'blue' ? 'bg-sky-400 hover:bg-sky-300' : 'bg-red-400 hover:bg-red-300'
+      }`}
+      {...restProps}
+    />
+  )
+}
+
+// App.js
+import React from 'react'
+import StyledButton from './StyledButton'
+
+function App() {
+  return (
+    <div>
+      <StyledButton color="blue">Blue Button</StyledButton>
+      <StyledButton color="red">Red Button</StyledButton>
+    </div>
+  )
+}
+
+export default App
+```
+
+### 分析
+
+智能提示 + 原子化的设计（通过组合多个原子样式来实现高阶样式，打包时只需打包原子样式，可以减轻样式文件的体积。ps: 初次接触 TailwindCSS 时，它让我联想到了 RISC 指令集 😂）+ 出色的官方文档，但实际写起来太爽了！缺点就是长长的样式名称堆积在 className 中，让项目代码显得过于杂乱......当然，也可以尝试采用 TailwindCSS + CSS Modules 或者 TailwindCSS + Styled-components 的混合方案，最近写个人网站时尝试了 [twin.macro](https://github.com/ben-rogerson/twin.macro) (The magic of Tailwind with the flexibility of css-in-js)，感觉开发效率有了质的提升~
+
+## Reference
+
+- [知乎：CSS in JS 的好与坏](https://zhuanlan.zhihu.com/p/103522819)
+- [掘金：React 中五种常见的样式策略](https://juejin.cn/post/7041745627323056142)
+- [《前端精读周刊》：请停止 css-in-js 的行为](https://github.com/ascoders/weekly/blob/master/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF/7.%E7%B2%BE%E8%AF%BB%E3%80%8A%E8%AF%B7%E5%81%9C%E6%AD%A2%20css-in-js%20%E7%9A%84%E8%A1%8C%E4%B8%BA%E3%80%8B.md)
+- [《前端精读周刊》：我们为何弃用 css-in-js](https://github.com/ascoders/weekly/blob/master/%E5%89%8D%E6%B2%BF%E6%8A%80%E6%9C%AF/263.%E7%B2%BE%E8%AF%BB%E3%80%8A%E6%88%91%E4%BB%AC%E4%B8%BA%E4%BD%95%E5%BC%83%E7%94%A8%20css-in-js%E3%80%8B.md)
+- [Why We're Breaking Up with CSS-in-JS](https://dev.to/srmagura/why-were-breaking-up-wiht-css-in-js-4g9b)
