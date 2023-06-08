@@ -1,7 +1,44 @@
-import tw, { styled } from "twin.macro"
+import tw, { styled } from 'twin.macro'
 
 const StyledHero = styled.article`
-  ${tw`mt-16 mb-28`};
+  ${tw`mt-16 mb-14`};
+
+  @keyframes shake {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    10% {
+      -webkit-transform: rotate(-16deg);
+      transform: rotate(-16deg);
+    }
+
+    20% {
+      -webkit-transform: rotate(16deg);
+      transform: rotate(16deg);
+    }
+
+    30% {
+      -webkit-transform: rotate(-16deg);
+      transform: rotate(-16deg);
+    }
+
+    40% {
+      -webkit-transform: rotate(12deg);
+      transform: rotate(12deg);
+    }
+
+    50% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    to {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+  }
 
   .hero-welcome {
     ${tw`grid grid-template-areas["hero"] items-center`};
@@ -9,11 +46,19 @@ const StyledHero = styled.article`
       grid-area: hero;
     }
     h1 {
-      ${tw`w-1/2 pr-2 text-4xl font-extrabold light:text-dark md:text-6xl`};
+      ${tw`w-1/2 pr-2 text-xl font-extrabold sm:text-2xl light:text-dark md:text-4xl lg:text-6xl`};
       .greeting {
-        ${tw`block mb-8 text-3xl md:text-4xl`};
+        ${tw`relative flex md:block text-xl sm:text-2xl md:text-4xl md:mb-8`};
+        .hand-emoji {
+          animation: shake 2.5s infinite;
+          transform-origin: 70% 70%;
+          display: inline-block;
+          width: 1.5em;
+          position: relative;
+          ${tw`md:text-5xl`};
+        }
       }
-      span[role="img"] {
+      span[role='img'] {
         ${tw`ml-4`};
       }
       .gatsby {

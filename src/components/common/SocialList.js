@@ -1,9 +1,9 @@
-import React from "react"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faGithub } from "@fortawesome/free-brands-svg-icons"
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 
-import { StyledSocialList, StyledButton } from "./styles/socialList"
+import { StyledSocialList, StyledButton } from './styles/socialList'
 
 export default function SocialList(props) {
   return (

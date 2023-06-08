@@ -57,6 +57,7 @@ const TagButtonList = ({ checkedName = 'All' }) => {
               key={`tag-button-${tag}`}
               color={isChecked ? 'checked' : 'notChecked'}
               onClick={() => handleClick(isChecked, tag)}
+              className="text-xs md:text-base"
             >
               {tag}
             </Button>
