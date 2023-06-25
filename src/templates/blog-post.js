@@ -6,7 +6,7 @@ import { Seo } from '../components/common'
 const BlogPostTemplate = ({ data: { mdx: post }, children }) => {
   return (
     <Layout>
-      <article className="prose max-w-none dark:prose-invert" itemScope itemType="http://schema.org/Article">
+      <article className="mt-12 prose max-w-none dark:prose-invert" itemScope itemType="http://schema.org/Article">
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
           <p>{post.frontmatter.date}</p>
